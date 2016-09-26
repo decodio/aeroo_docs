@@ -195,6 +195,10 @@ class DocumentConverter:
         if filter_name == 'Text - txt - csv (StarCalc)':
             properties.update({"FilterOptions": CSVFilterOptions})
         props = self._toProperties(**properties)
+        # PDF/A format # TODO: make it configurable from client side
+        if filter_name == 'writer_pdf_Export':
+            props += (PropertyValue("FilterData", 0, uno.Any("[]com.sun.star.beans.PropertyValue", self._toProperties(SelectPdfVersion=1), ),0),)
+
         try:
             #url = uno.systemPathToFileUrl(path) #when storing to filesystem
             self.document.storeToURL('private:stream', props)
